@@ -114,6 +114,13 @@ table.spec th{background:var(--surface2); white-space:nowrap; font-weight:600; w
 .verdict.ok{color:var(--ok);} .verdict.ng{color:var(--ng);}
 .explain{background:var(--surface2); border-radius:10px; padding:12px 14px; font-size:13.5px;}
 .explain b{color:var(--accent);}
+.kref{margin-top:8px; font-size:12.5px; border-top:1px dashed var(--line); padding-top:8px;}
+.kref a{color:var(--accent); font-weight:700; text-decoration:none;}
+.kref a:hover{text-decoration:underline;}
+.toclinks{display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:10px 0;}
+.toclinks a{display:block; background:var(--surface2); border-radius:8px; padding:8px 10px; font-size:12.5px; color:var(--ink); text-decoration:none; font-weight:600;}
+.toclinks a:hover{background:var(--accent-soft); color:var(--accent);}
+@media (max-width:480px){ .toclinks{grid-template-columns:1fr;} }
 .progressbar{height:5px; background:var(--surface2); border-radius:99px; overflow:hidden; margin-bottom:14px;}
 .progressbar i{display:block; height:100%; background:var(--accent); border-radius:99px; transition:width .25s;}
 .timer{font-variant-numeric:tabular-nums; font-weight:700; color:var(--accent);}
@@ -242,6 +249,25 @@ const KAN_GUIDE = `
 </div>`;
 
 const DRONE_GUIDE = `
+<div class="card">
+<h2>📖 教則リーダー(出題範囲の原典)</h2>
+<p style="color:var(--muted);font-size:13.5px;">学科試験はこの「教則」からそのまま出ます。いつでも開けるようにアプリ内に置きました。間違えた問題の解説からも該当ページに直接ジャンプできます。</p>
+<div class="btn-row">
+<a class="btn" href="https://japannet2010-coder.github.io/sikaku-study/kyousoku.pdf" target="_blank" rel="noopener" style="text-decoration:none;">教則 第4版 全文PDFを開く</a>
+</div>
+<h3>章別ジャンプ</h3>
+<div class="toclinks">
+<a href="https://japannet2010-coder.github.io/sikaku-study/kyousoku.pdf#page=8" target="_blank" rel="noopener">2. 操縦者の心得・事故対応 (p.8)</a>
+<a href="https://japannet2010-coder.github.io/sikaku-study/kyousoku.pdf#page=13" target="_blank" rel="noopener">3. 無人航空機に関する規則 (p.13)</a>
+<a href="https://japannet2010-coder.github.io/sikaku-study/kyousoku.pdf#page=34" target="_blank" rel="noopener">3.2 航空法以外の法令等 (p.34)</a>
+<a href="https://japannet2010-coder.github.io/sikaku-study/kyousoku.pdf#page=39" target="_blank" rel="noopener">4. 無人航空機のシステム (p.39)</a>
+<a href="https://japannet2010-coder.github.io/sikaku-study/kyousoku.pdf#page=57" target="_blank" rel="noopener">5. 操縦者及び運航体制 (p.57)</a>
+<a href="https://japannet2010-coder.github.io/sikaku-study/kyousoku.pdf#page=68" target="_blank" rel="noopener">6. 運航上のリスク管理 (p.68)</a>
+<a href="https://japannet2010-coder.github.io/sikaku-study/kyousoku.pdf#page=74" target="_blank" rel="noopener">6.2 気象の基礎知識 (p.74)</a>
+<a href="https://www.mlit.go.jp/koku/license.html" target="_blank" rel="noopener">国交省 技能証明ページ(最新版確認)</a>
+</div>
+<p class="note">出典:「無人航空機の飛行の安全に関する教則(第4版・令和7年2月1日)」国土交通省。令和7年4月17日以降の学科試験は第4版に準拠します。※PCブラウザではリンクから該当ページが直接開きます。スマホでは先頭ページから開く場合があるため、カッコ内のページ番号(PDFのページ)まで移動してください。</p>
+</div>
 <div class="card">
 <h2>試験の概要(一等 学科試験)</h2>
 <table class="spec">
@@ -889,6 +915,47 @@ function rankBadge(rk){
   return `<span class="rank r${rk}">${t}</span>`;
 }
 
+/* 教則第4版(令和7年2月1日・国土交通省)への参照。#page= はPDFのページ番号 */
+const KYOSOKU_URL = 'https://japannet2010-coder.github.io/sikaku-study/kyousoku.pdf';
+const KREF = [
+  [/事故|負傷者|救護|重大インシデント/, '2.3 事故が起きた時の対応', 12],
+  [/機体登録|登録記号|リモートID|変更登録/, '3.1 航空法全般(無人航空機の登録制度)', 13],
+  [/機体認証|型式認証|使用の条件/, '3.1 航空法全般(機体認証制度)', 15],
+  [/技能証明|限定|登録講習機関|学科試験合格/, '3.1 航空法全般(技能証明制度)', 15],
+  [/緊急用務空域|150m|空港/, '3.1 航空法全般(規制対象となる空域)', 14],
+  [/特定飛行|カテゴリー|立入管理|第三者/, '3.1 航空法全般(特定飛行・カテゴリー)', 14],
+  [/夜間|目視|30m|催し|危険物|物件投下|農薬|係留/, '3.1 航空法全般(飛行の方法・特例)', 14],
+  [/飛行計画|DIPS/, '3.1 航空法全般(飛行計画の通報)', 16],
+  [/飛行日誌/, '3.1 航空法全般(飛行日誌)', 29],
+  [/保険|賠償/, '3.1 航空法全般(賠償責任・保険)', 25],
+  [/アルコール|飲酒|飛行前に確認|粗暴|遵守事項|有人航空機/, '3.1 航空法全般(運航ルール・遵守事項)', 26],
+  [/飛行禁止法|300m/, '3.2 航空法以外の法令等(小型無人機等飛行禁止法)', 34],
+  [/電波|周波数|技適|アマチュア|携帯電話網|アンテナ|ダイバーシティ/, '3.2 航空法以外の法令等(電波法)ほか4.5', 36],
+  [/道路|民法|土地|個人情報|プライバシー|条例/, '3.2 航空法以外の法令等', 34],
+  [/ボルテックスリング|オートローテーション|ATTIモード|GPSモード/, '5.2 操縦者に求められる操縦知識', 61],
+  [/VTOL|マルチコプター|ヘリコプター|飛行機|固定翼|ヨー|前進|ホバリング/, '4.1〜4.3 機体の特徴・飛行原理', 39],
+  [/揚力|失速|迎え角|翼端渦|地面効果|重心|運動エネルギー|推力/, '4.3 飛行原理と飛行性能', 43],
+  [/バッテリー|リチウムポリマー|セル|Cレート|メモリー効果|ESC|モーター|プロペラ|フライトコントローラ|ジンバル|KV値|コネクタ/, '4.4 機体の構成', 46],
+  [/GNSS|GPS|測位|DOP|RTK|みちびき/, '4.5 機体以外の要素技術(GNSS)', 46],
+  [/コンパス|磁|IMU|センサ|気圧|フェールセーフ|RTH|ホームポイント|映像伝送|遅延/, '4.5 機体以外の要素技術', 51],
+  [/整備|点検|ファームウェア|保管|結露|振動|IPコード/, '4.6 機体の整備・点検・保管', 55],
+  [/ハザーダスアティチュード|反権威|アンチドート|状況認識|ワークロード|暗順応|疲労|体調|IMSAFE/, '5.3 操縦者のパフォーマンス', 66],
+  [/CRM|コミュニケーション|復唱|公正な文化|指差呼称|ヒヤリハット|ハインリッヒ|スイスチーズ|ブリーフィング|引継ぎ|補助者/, '5.4 安全な運航のための意思決定体制(CRM等)', 67],
+  [/リスク|ハザード|ALARP|バッファ|緩衝|訓練|マニュアル/, '6.1 運航リスクの評価・運航計画の立案', 68],
+  [/海陸風|凪|積乱雲|ダウンバースト|霧|風|雷|気温|標高|等圧線|前線|台風|季節風|視程|雲|ウィンドシア|着氷|逆転層|サーマル|気象|天気/, '6.2 気象の基礎知識・気象情報', 74],
+];
+const KREF_DEF = { '規則':['3. 無人航空機に関する規則',13], 'システム':['4. 無人航空機のシステム',39], '運航体制':['5. 操縦者及び運航体制',57], 'リスク・気象':['6. 運航上のリスク管理',68], '計算問題':['4.3 飛行原理と飛行性能ほか',43] };
+function refOf(q){
+  for(const [re,s,p] of KREF){ if(re.test(q.q)) return {s,p}; }
+  const d = KREF_DEF[q.c] || ['教則(全体)',7];
+  return {s:d[0], p:d[1]};
+}
+function krefHtml(q){
+  if(state.exam!=='drone') return '';
+  const r = refOf(q);
+  return `<div class="kref">📖 教則第4版の該当箇所: <a href="${KYOSOKU_URL}#page=${r.p}" target="_blank" rel="noopener">${r.s}(PDF p.${r.p})</a></div>`;
+}
+
 /* ---------------- 状態・保存 ---------------- */
 const LS_KEY = 'shikaku-study-v1';
 let store;
@@ -1058,7 +1125,7 @@ function answer(sel){
   });
   document.getElementById('feedback').innerHTML =
     `<div class="verdict ${ok?'ok':'ng'}">${ok?'○ 正解':'× 不正解'}　<span style="font-weight:400;font-size:13px;color:var(--muted)">正答:${KEYS[perm.indexOf(q.ans)]}</span></div>
-     <div class="explain">${q.ex}</div>`;
+     <div class="explain">${q.ex}${krefHtml(q)}</div>`;
   const act = document.getElementById('qActions');
   const nb = document.createElement('button');
   nb.className='btn'; nb.textContent = ss.idx+1 >= ss.qids.length ? '結果を見る' : '次の問題へ';
@@ -1094,7 +1161,7 @@ function renderResult(){
       <div class="rq-head"><span class="mark ${ok?'ok':'ng'}">${ok?'○':'×'}</span><span style="color:var(--muted)">問${i+1}・${q.c}</span>${rankBadge(rankOf(state.exam,q))}</div>
       <div class="rq-text">${esc(q.q)}</div>
       <div class="rq-detail">あなたの解答:${sel==null?'—':KEYS[perm.indexOf(sel)]+'. '+esc(q.a[sel])}<br>正答:<b style="color:var(--ok)">${KEYS[perm.indexOf(q.ans)]}. ${esc(q.a[q.ans])}</b></div>
-      ${ok?'':`<div class="explain" style="margin-top:6px">${q.ex}</div>`}
+      ${ok?'':`<div class="explain" style="margin-top:6px">${q.ex}${krefHtml(q)}</div>`}
     </div>`;
   }).join('');
 
