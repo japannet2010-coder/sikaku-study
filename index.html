@@ -121,6 +121,12 @@ table.spec th{background:var(--surface2); white-space:nowrap; font-weight:600; w
 .toclinks a{display:block; background:var(--surface2); border-radius:8px; padding:8px 10px; font-size:12.5px; color:var(--ink); text-decoration:none; font-weight:600;}
 .toclinks a:hover{background:var(--accent-soft); color:var(--accent);}
 @media (max-width:480px){ .toclinks{grid-template-columns:1fr;} }
+.pdfmodal{position:fixed; inset:0; z-index:100; background:var(--bg); display:none; flex-direction:column;}
+.pdfmodal.open{display:flex;}
+.pdfmodal .bar{display:flex; align-items:center; gap:8px; padding:10px 14px; border-bottom:1px solid var(--line); background:var(--surface); flex:none;}
+.pdfmodal .bar .ttl{flex:1; font-size:13px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.pdfmodal iframe{flex:1; width:100%; border:none; background:var(--surface2);}
+.btn.small{padding:7px 12px; font-size:12.5px;}
 .progressbar{height:5px; background:var(--surface2); border-radius:99px; overflow:hidden; margin-bottom:14px;}
 .progressbar i{display:block; height:100%; background:var(--accent); border-radius:99px; transition:width .25s;}
 .timer{font-variant-numeric:tabular-nums; font-weight:700; color:var(--accent);}
@@ -154,6 +160,15 @@ table.hist th{color:var(--muted); font-weight:600;}
   </header>
   <nav class="tabs" id="tabs"></nav>
   <main id="view"></main>
+</div>
+
+<div class="pdfmodal" id="pdfModal">
+  <div class="bar">
+    <span class="ttl" id="pdfTitle">教則 第5版</span>
+    <a class="btn ghost small" id="pdfNewTab" href="#" target="_blank" rel="noopener" style="text-decoration:none;">別タブで開く</a>
+    <button class="btn small" id="pdfClose">✕ 閉じる</button>
+  </div>
+  <iframe id="pdfFrame" title="教則PDF"></iframe>
 </div>
 
 <script>
@@ -1234,8 +1249,36 @@ function renderStats(){
   };
 }
 
-/* キーボード: 1〜4で解答 */
+/* ---------------- アプリ内PDFビューア(教則) ---------------- */
+function openPdf(url, title){
+  document.getElementById('pdfFrame').src = url;
+  document.getElementById('pdfNewTab').href = url;
+  document.getElementById('pdfTitle').textContent = title || '教則 第5版';
+  document.getElementById('pdfModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  try{ history.pushState({pdf:1}, ''); }catch(e){}
+}
+function closePdf(fromPop){
+  const m = document.getElementById('pdfModal');
+  if(!m.classList.contains('open')) return;
+  m.classList.remove('open');
+  document.getElementById('pdfFrame').src = 'about:blank';
+  document.body.style.overflow = '';
+  if(!fromPop){ try{ if(history.state && history.state.pdf) history.back(); }catch(e){} }
+}
+document.getElementById('pdfClose').onclick = () => closePdf(false);
+window.addEventListener('popstate', () => closePdf(true)); // スマホの「戻る」でも閉じる
+/* 教則PDFへのリンクはすべてアプリ内ビューアで開く(ページ遷移しない) */
+document.addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('a[href*="kyousoku.pdf"]');
+  if(!a || a.id === 'pdfNewTab') return;
+  e.preventDefault();
+  openPdf(a.getAttribute('href'), a.textContent.trim());
+});
+
+/* キーボード: 1〜4で解答、Escで教則を閉じる */
 document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape'){ closePdf(false); return; }
   if(!state.session || state.session.answered) return;
   const n = parseInt(e.key,10);
   if(n>=1 && n<=4){
