@@ -120,6 +120,15 @@ table.spec th{background:var(--surface2); white-space:nowrap; font-weight:600; w
 .pdfmodal .bar .ttl{flex:1; font-size:13px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
 .pdfmodal iframe{flex:1; width:100%; border:none; background:var(--surface2);}
 .btn.small{padding:7px 12px; font-size:12.5px;}
+.gate{position:fixed; inset:0; z-index:200; background:var(--bg); display:flex; align-items:center; justify-content:center; padding:24px;}
+.gate.hidden{display:none;}
+.gate .box{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:28px 24px; max-width:340px; width:100%; box-shadow:var(--shadow); text-align:center;}
+.gate h1{font-size:20px; margin:0 0 4px;}
+.gate p{font-size:13px; color:var(--muted); margin:0 0 18px;}
+.gate input{width:100%; box-sizing:border-box; border:1.5px solid var(--line); border-radius:10px; padding:12px 14px; font-size:16px; background:var(--bg); color:var(--ink); text-align:center; letter-spacing:.05em;}
+.gate input:focus{outline:none; border-color:var(--accent);}
+.gate .err{color:var(--ng); font-size:12.5px; min-height:18px; margin:8px 0 0;}
+.gate .btn{margin-top:14px; width:100%;}
 .progressbar{height:5px; background:var(--surface2); border-radius:99px; overflow:hidden; margin-bottom:14px;}
 .progressbar i{display:block; height:100%; background:var(--accent); border-radius:99px; transition:width .25s;}
 .timer{font-variant-numeric:tabular-nums; font-weight:700; color:var(--accent);}
@@ -146,6 +155,17 @@ table.hist th{color:var(--muted); font-weight:600;}
 @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
 </style>
 
+<div class="gate" id="gate">
+  <div class="box">
+    <div style="font-size:34px">📘</div>
+    <h1>資格スタディ</h1>
+    <p>合言葉を入力してください</p>
+    <input id="gateInput" type="password" inputmode="text" autocomplete="off" autocapitalize="off" placeholder="合言葉">
+    <div class="err" id="gateErr"></div>
+    <button class="btn" id="gateBtn">入る</button>
+  </div>
+</div>
+
 <div class="wrap">
   <header class="app">
     <div class="brand"><h1>資格スタディ</h1><span class="sub">管工事2級 × ドローン一等 学科対策</span></div>
@@ -166,6 +186,30 @@ table.hist th{color:var(--muted); font-weight:600;}
 
 <script>
 'use strict';
+/* ---------------- 合言葉ゲート ---------------- */
+function hashStr(s){ let h=5381; for(let i=0;i<s.length;i++){ h=((h<<5)+h)^s.charCodeAt(i); } return (h>>>0).toString(16); }
+const PASS_HASH = 'eba4dc8c'; // 合言葉 hy95dnktads3njx8 のハッシュ
+const GATE_KEY = 'shikaku-gate-ok';
+(function initGate(){
+  const gate=document.getElementById('gate');
+  const input=document.getElementById('gateInput');
+  const err=document.getElementById('gateErr');
+  const btn=document.getElementById('gateBtn');
+  if(!gate) return;
+  // ゲート未設定(ハッシュ未差し替え)なら素通り
+  if(PASS_HASH==='__SET_ME__'){ gate.classList.add('hidden'); return; }
+  try{ if(localStorage.getItem(GATE_KEY)===PASS_HASH){ gate.classList.add('hidden'); return; } }catch(e){}
+  function tryOpen(){
+    if(hashStr(input.value.trim())===PASS_HASH){
+      try{ localStorage.setItem(GATE_KEY, PASS_HASH); }catch(e){}
+      gate.classList.add('hidden');
+    }else{ err.textContent='合言葉が違います'; input.value=''; input.focus(); }
+  }
+  btn.onclick=tryOpen;
+  input.addEventListener('keydown', e=>{ if(e.key==='Enter') tryOpen(); });
+  setTimeout(()=>input.focus(), 100);
+})();
+
 /* ---------------- データ ---------------- */
 const KAN_GUIDE = `
 <div class="card">
