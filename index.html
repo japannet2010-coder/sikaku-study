@@ -1292,6 +1292,56 @@ for(const ex of Object.keys(EXAMS)){
 }
 function save(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(store)); }catch(e){} }
 
+/* ---------------- 中断セッションの保存・再開 ---------------- */
+const SESS_KEY = 'shikaku-session-v1';
+function saveSession(){
+  const ss = state.session;
+  if(!ss || ss.idx >= ss.qids.length) return;
+  try{ localStorage.setItem(SESS_KEY, JSON.stringify({
+    exam:state.exam, cat:state.cat, rankF:state.rankF,
+    qids:ss.qids, perms:ss.perms, mode:ss.mode, idx:ss.idx,
+    answers:ss.answers, correct:ss.correct, elapsed:Date.now()-ss.start
+  })); }catch(e){}
+}
+function clearSavedSession(){ try{ localStorage.removeItem(SESS_KEY); }catch(e){} }
+function loadSavedSession(){ try{ return JSON.parse(localStorage.getItem(SESS_KEY)); }catch(e){ return null; } }
+function validSaved(s){
+  if(!s || !s.exam || !EXAMS[s.exam] || !Array.isArray(s.qids) || !Array.isArray(s.perms)) return false;
+  if(!s.qids.length || s.qids.length!==s.perms.length) return false;
+  if(typeof s.idx!=='number' || s.idx<0 || s.idx>=s.qids.length) return false;
+  const arr = EXAMS[s.exam].q;
+  for(let k=0;k<s.qids.length;k++){
+    const q = arr[s.qids[k]];
+    if(!q || !Array.isArray(s.perms[k]) || s.perms[k].length!==q.a.length) return false;
+  }
+  return true;
+}
+function resumeSavedSession(){
+  const s = loadSavedSession();
+  if(!validSaved(s)) { clearSavedSession(); render(); return; }
+  stopTimer();
+  state.exam = s.exam; state.cat = s.cat||'all'; state.rankF = s.rankF||'all';
+  renderChrome();
+  state.session = { qids:s.qids, perms:s.perms, mode:s.mode, idx:s.idx, answers:s.answers, correct:s.correct, answered:false, start:Date.now()-(s.elapsed||0) };
+  if(s.mode==='mock') startTimer();
+  renderQuestion();
+  window.scrollTo(0,0);
+}
+function injectResumeBanner(){
+  const s = loadSavedSession();
+  if(!validSaved(s)) return;
+  const modeName = s.mode==='mock'?'模擬試験':s.mode==='weak'?'弱点復習':'練習';
+  const div = document.createElement('div');
+  div.className = 'card'; div.style.borderColor = 'var(--accent)';
+  div.innerHTML = `<h2>▶ 中断した${modeName}があります</h2>
+    <p style="color:var(--muted);font-size:13.5px;margin:0 0 4px">${EXAMS[s.exam].short}・問 ${s.idx+1} / ${s.qids.length} まで進んでいます。</p>
+    <div class="btn-row"><button class="btn" id="resumeBtn">続きから再開</button><button class="btn ghost" id="discardBtn">破棄して新規</button></div>`;
+  const v = $view();
+  v.insertBefore(div, v.firstChild);
+  document.getElementById('resumeBtn').onclick = resumeSavedSession;
+  document.getElementById('discardBtn').onclick = () => { clearSavedSession(); render(); };
+}
+
 let state = { exam:'kan', tab:'guide', cat:'all', rankF:'all', session:null };
 let timerId = null;
 
@@ -1314,10 +1364,10 @@ function renderChrome(){
   const sw = document.getElementById('examSwitch');
   sw.innerHTML = Object.entries(EXAMS).map(([k,e]) =>
     `<button class="exam-btn ${state.exam===k?'active':''}" data-exam="${k}">${e.label}<small>${e.sub}</small></button>`).join('');
-  sw.querySelectorAll('button').forEach(b => b.onclick = () => { stopTimer(); state.exam=b.dataset.exam; state.session=null; state.cat='all'; renderChrome(); render(); });
+  sw.querySelectorAll('button').forEach(b => b.onclick = () => { stopTimer(); saveSession(); state.exam=b.dataset.exam; state.session=null; state.cat='all'; renderChrome(); render(); });
   const tb = document.getElementById('tabs');
   tb.innerHTML = TABS.map(([k,l]) => `<button class="${state.tab===k?'active':''}" data-tab="${k}">${l}</button>`).join('');
-  tb.querySelectorAll('button').forEach(b => b.onclick = () => { stopTimer(); state.tab=b.dataset.tab; state.session=null; render(); });
+  tb.querySelectorAll('button').forEach(b => b.onclick = () => { stopTimer(); saveSession(); state.tab=b.dataset.tab; state.session=null; render(); });
 }
 
 function render(){
@@ -1328,6 +1378,7 @@ function render(){
   else if(state.tab==='mock') renderMockSetup();
   else if(state.tab==='weak') renderWeakSetup();
   else if(state.tab==='stats') renderStats();
+  if(state.tab==='practice' || state.tab==='mock' || state.tab==='weak') injectResumeBanner();
   window.scrollTo(0,0);
 }
 
@@ -1388,6 +1439,7 @@ function renderWeakSetup(){
 /* ---------------- 出題セッション ---------------- */
 function startSession(qids, mode){
   if(!qids.length) return;
+  clearSavedSession();
   const perms = qids.map(qi => shuffle(EXAMS[state.exam].q[qi].a.map((_,i)=>i)));
   state.session = { qids, perms, mode, idx:0, answers:new Array(qids.length).fill(null), correct:0, answered:false, start:Date.now() };
   if(mode==='mock') startTimer();
@@ -1423,7 +1475,7 @@ function renderQuestion(){
     <div class="btn-row" id="qActions"><button class="btn ghost" id="quitBtn">中断する</button></div>
   </div>`;
   $view().querySelectorAll('.choice').forEach(b => b.onclick = () => answer(+b.dataset.i));
-  document.getElementById('quitBtn').onclick = () => { stopTimer(); state.session=null; render(); };
+  document.getElementById('quitBtn').onclick = () => { stopTimer(); saveSession(); state.session=null; render(); };
 }
 
 function answer(sel){
@@ -1438,6 +1490,7 @@ function answer(sel){
   ss.answers[ss.idx] = orig;
   if(ok) ss.correct++;
   recordAnswer(state.exam, qi, ok);
+  saveSession();
 
   if(ss.mode==='mock'){ next(); return; } // 模試は即時フィードバックなし
 
@@ -1461,12 +1514,14 @@ function answer(sel){
 function next(){
   const ss = state.session;
   ss.idx++; ss.answered=false;
+  saveSession();
   renderQuestion();
   window.scrollTo(0,0);
 }
 
 function renderResult(){
   stopTimer();
+  clearSavedSession();
   const ss = state.session;
   const exam = EXAMS[state.exam];
   const total = ss.qids.length, score = ss.correct;
