@@ -112,6 +112,9 @@ table.spec th{background:var(--surface2); white-space:nowrap; font-weight:600; w
 .verdict{font-weight:800; font-size:15px; margin:14px 0 6px;}
 .verdict.ok{color:var(--ok);} .verdict.ng{color:var(--ng);}
 .explain{background:var(--surface2); border-radius:10px; padding:12px 14px; font-size:13.5px;}
+.trick{margin:8px 0 6px; padding:8px 12px; border-left:3px solid var(--accent); background:var(--accent-soft); border-radius:8px; font-size:13px; line-height:1.6;} .trick b{color:var(--accent);}
+.steps{margin:10px 0; background:var(--surface2); border-radius:10px; padding:10px 14px; font-size:13.5px;} .steps>summary{cursor:pointer; font-weight:700; list-style:none;} .steps>summary::-webkit-details-marker{display:none;} .steps ol{margin:8px 0 4px 18px; padding:0;} .steps li{margin:4px 0;} .steps p{margin:6px 0 0; color:var(--muted); font-size:13px;}
+.weak-pat{display:flex; flex-wrap:wrap; gap:6px; margin:8px 0;} .weak-pat span{background:var(--surface2); border-radius:999px; padding:4px 10px; font-size:12.5px;} .weak-pat span b{color:var(--accent);}
 .ex-toggle{margin-top:6px;} .ex-toggle>summary{cursor:pointer; font-size:13px; color:var(--accent); list-style:none; padding:4px 0;} .ex-toggle>summary::-webkit-details-marker{display:none;} .ex-toggle[open]>summary{margin-bottom:6px;}
 .explain b{color:var(--accent);}
 .kref{margin-top:8px; font-size:12.5px; border-top:1px dashed var(--line); padding-top:8px;}
@@ -263,6 +266,16 @@ const KAN_GUIDE = `
 </ul>
 </div>
 <div class="card">
+<h2>解き方の4ステップ</h2>
+<ol style="margin:0 0 0 18px;padding:0;line-height:1.8;">
+<li><b>数字と「大きい/小さい」に丸をつける</b>。読む前に、選択肢の数値と「大きく/小さく/上がる/下がる」に印。ここが狙われる。</li>
+<li><b>自信のある「正しい」ものを消す</b>。正しい文が多数派(四肢なら3つ、三肢なら2つ)なので、消せるものから消す。</li>
+<li><b>残り2つで迷ったら</b>、①数字が具体的な方 ②方向を逆にして自然な方 ③「〜なら不要」「〜に限り」と言い切る方 を疑う。</li>
+<li><b>答えたら解説の太字を見る</b>。「1.8m→1.5m」のように、どこをずらされたかだけ覚える。</li>
+</ol>
+<p style="color:var(--muted);font-size:13px;margin-top:8px;">間違えた問題には「ひっかけの型」(①数値ずらし/②反転/③用語入替え/④条件すり替え/⑤組合せ/⑥計算)が自動表示され、弱点復習で自分がよく引っかかる型が集計されます。</p>
+</div>
+<div class="card">
 <h2>学習戦略(推奨90〜150時間)</h2>
 <ul>
 <li><b>①過去問5年分を3周</b>する。1周目は解説を読み込み、2周目以降は間違えた問題だけ回す。</li>
@@ -391,6 +404,16 @@ const DRONE_GUIDE = `
 </ul>
 </div>
 <div class="card">
+<h2>解き方の4ステップ</h2>
+<ol style="margin:0 0 0 18px;padding:0;line-height:1.8;">
+<li><b>数字と「大きい/小さい」に丸をつける</b>。読む前に、選択肢の数値と「大きく/小さく/上がる/下がる」に印。ここが狙われる。</li>
+<li><b>自信のある「正しい」ものを消す</b>。正しい文が多数派(四肢なら3つ、三肢なら2つ)なので、消せるものから消す。</li>
+<li><b>残り2つで迷ったら</b>、①数字が具体的な方 ②方向を逆にして自然な方 ③「〜なら不要」「〜に限り」と言い切る方 を疑う。</li>
+<li><b>答えたら解説の太字を見る</b>。「1.8m→1.5m」のように、どこをずらされたかだけ覚える。</li>
+</ol>
+<p style="color:var(--muted);font-size:13px;margin-top:8px;">間違えた問題には「ひっかけの型」(①数値ずらし/②反転/③用語入替え/④条件すり替え/⑤組合せ/⑥計算)が自動表示され、弱点復習で自分がよく引っかかる型が集計されます。</p>
+</div>
+<div class="card">
 <h2>学習戦略(推奨40〜80時間)</h2>
 <ul>
 <li><b>①最新版の教則を2〜3周読む</b>。太字・数値・定義を優先。改訂されるので必ず最新版で。</li>
@@ -458,6 +481,16 @@ const KAN1_GUIDE = `
 <li>選択問題は、空調(No.15〜23)と衛生(No.24〜37)のどちらを軸にするか先に決め、軸側は全問・反対側は自信のある問題だけ。法規は建設業法・安衛法・労基法・建基法・消防法を必ず取り、廃掃法/リサイクル法/フロン法/騒音規制法/浄化槽法/建築物衛生法のうち弱い2問を捨てる。</li>
 <li>10年分で見ると論点の約6割が繰り返し(本アプリの★★★)。★★★だけで模試60%を超えるまで回してから★★に広げる。</li>
 </ul>
+</div>
+<div class="card">
+<h2>解き方の4ステップ</h2>
+<ol style="margin:0 0 0 18px;padding:0;line-height:1.8;">
+<li><b>数字と「大きい/小さい」に丸をつける</b>。読む前に、選択肢の数値と「大きく/小さく/上がる/下がる」に印。ここが狙われる。</li>
+<li><b>自信のある「正しい」ものを消す</b>。正しい文が多数派(四肢なら3つ、三肢なら2つ)なので、消せるものから消す。</li>
+<li><b>残り2つで迷ったら</b>、①数字が具体的な方 ②方向を逆にして自然な方 ③「〜なら不要」「〜に限り」と言い切る方 を疑う。</li>
+<li><b>答えたら解説の太字を見る</b>。「1.8m→1.5m」のように、どこをずらされたかだけ覚える。</li>
+</ol>
+<p style="color:var(--muted);font-size:13px;margin-top:8px;">間違えた問題には「ひっかけの型」(①数値ずらし/②反転/③用語入替え/④条件すり替え/⑤組合せ/⑥計算)が自動表示され、弱点復習で自分がよく引っかかる型が集計されます。</p>
 </div>
 <div class="card">
 <h2>学習戦略(推奨150〜250時間)</h2>
@@ -1676,6 +1709,35 @@ function rankOf(exam,q){
   if(R.def && R.def[q.c]) return R.def[q.c];
   return 2;
 }
+/* ---------------- ひっかけパターン判定と解き方の手順 ---------------- */
+const TRICKS = {
+  calc:  {name:'⑥計算',          tip:'単位をそろえる(m³/s→m³/h、℃→K)。「ただし〜」の条件(外気濃度・密度・比熱)を必ず式に入れる。径が1/2なら面積は1/4。'},
+  combo: {name:'⑤組合せ',        tip:'4組のうち1組だけ崩してある型。確実に正しい組から消して、残った組を疑う。'},
+  cond:  {name:'④条件のすり替え', tip:'「〜なら不要」「〜に限り」「〜のみ」「〜を問わず」と例外を言い切る型。言い切る文ほど疑う。'},
+  num:   {name:'①数値ずらし',     tip:'数字が1段ずらされている型。解説の太字を見て「誤った値→正しい値」の形で覚え直す。'},
+  dir:   {name:'②大小・増減の反転', tip:'「大きく/小さく」「上がる/下がる」が逆にされている型。「〜すると」の後の方向を逆にして読み、自然なら誤り。'},
+  term:  {name:'③用語の入替え',   tip:'似た用語を入れ替える型。解説の太字の用語と、入れ替えられた相手をペアで覚える。'},
+  pick:  {name:'正しいものを選ぶ型', tip:'他の選択肢は全部誤り。各選択肢の数値・方向を1つずつ検証して消去法で絞る。'}
+};
+function trickOf(q){
+  const ans = q.a[q.ans];
+  const stem = q.q;
+  if(/組合せ|組み合わせ/.test(stem)) return 'combo';
+  if(q.a.every(x=>/^[0-9０-９√約]/.test(x)) || /求め|最も近い|計算|何倍/.test(stem)) return 'calc';
+  if(/適当なもの|正しいもの|該当するもの/.test(stem) && !/でない|誤|ない/.test(stem)) return 'pick';
+  if(/に限り|のみ|であれば|なくてよい|不要|かかわらず|問わず|してよい|しなくてよい|てもよい|必要はない/.test(ans)) return 'cond';
+  if(/[0-9０-９]/.test(ans)) return 'num';
+  if(/大きく|小さく|高く|低く|増加|減少|上昇|低下|速く|遅く|比例|以上|以下|超え|未満|長く|短く|多く|少なく|大きい|小さい|高い|低い/.test(ans)) return 'dir';
+  return 'term';
+}
+function trickHtml(q){ const t = TRICKS[trickOf(q)]; return `<div class="trick">🎯 ひっかけの型:<b>${t.name}</b>　${t.tip}</div>`; }
+const STEPS_HTML = `<details class="steps"><summary>📝 解き方の4ステップ(タップで開く)</summary><ol>
+<li><b>数字と「大きい/小さい」に丸</b>:読む前に、選択肢の数値と「大きく/小さく/上がる/下がる」に印。ここが狙われる。</li>
+<li><b>自信のある「正しい」ものを消す</b>:正しい文が多数派(四肢なら3つ、三肢なら2つ)。消せるものから消す。</li>
+<li><b>残り2つで迷ったら</b>:数字が具体的な方/方向を逆にして自然な方/「〜なら不要」「〜に限り」と言い切る方を疑う。</li>
+<li><b>答えたら解説の太字を見る</b>:「1.8m→1.5m」のように、どこをずらされたかだけ覚える。</li></ol>
+<p>応用能力(誤り2つ)は「正しいと確信できる2つを消して、残った2つ」。計算は単位をそろえて「ただし〜」を式に入れる。間違えた問題には「ひっかけの型」が表示されます。</p></details>`;
+
 function rankBadge(rk){
   const t = rk===3?'★★★ 必修':rk===2?'★★ 頻出':'★ 標準';
   return `<span class="rank r${rk}">${t}</span>`;
@@ -1837,6 +1899,7 @@ function renderPractice(){
     <div class="chips">${list.map(c=>`<button class="chip ${state.cat===c?'active':''}" data-cat="${c}">${c==='all'?'全分野':c} <span class="cnt">${cnt(c)}問</span></button>`).join('')}</div>
     <div class="chips">${RF.map(([v,l])=>`<button class="chip ${state.rankF===v?'active':''}" data-rank="${v}">${l}</button>`).join('')}</div>
     <div class="legend">${rankBadge(3)} 過去の試験で繰り返し出ている定番論点。最優先で完璧に　${rankBadge(2)} よく出るテーマ　${rankBadge(1)} 出題頻度低め・差がつく発展問題</div>
+    ${STEPS_HTML}
     <div class="btn-row"><button class="btn" id="startPractice">練習を始める</button></div>
   </div>`;
   $view().querySelectorAll('.chip[data-cat]').forEach(b=> b.onclick=()=>{ state.cat=b.dataset.cat; renderPractice(); });
@@ -1867,12 +1930,23 @@ function renderMockSetup(){
 function renderWeakSetup(){
   const wrong = store[state.exam].wrong;
   if(!wrong.length){
-    $view().innerHTML = `<div class="card"><h2>弱点復習</h2><div class="empty">間違えた問題はまだありません。<br>練習や模試で間違えた問題が自動的にここに溜まり、正解すると消えていきます。</div></div>`;
+    $view().innerHTML = `<div class="card"><h2>弱点復習</h2><div class="empty">間違えた問題はまだありません。<br>練習や模試で間違えた問題が自動的にここに溜まり、正解すると消えていきます。</div>${STEPS_HTML}</div>`;
     return;
   }
+  const exam = EXAMS[state.exam];
+  const pc = {}; wrong.forEach(qi => { const t = trickOf(exam.q[qi]); pc[t] = (pc[t]||0)+1; });
+  const pats = Object.keys(pc).sort((a,b)=>pc[b]-pc[a]);
+  const top = TRICKS[pats[0]];
+  const cc = {}; wrong.forEach(qi => { const c = exam.q[qi].c; cc[c] = (cc[c]||0)+1; });
+  const catTop = Object.keys(cc).sort((a,b)=>cc[b]-cc[a]).slice(0,3);
   $view().innerHTML = `<div class="card">
     <h2>弱点復習</h2>
     <p style="color:var(--muted);font-size:13.5px;">これまでに間違えた <b style="color:var(--accent)">${wrong.length}問</b> を復習します。正解するとリストから外れます。</p>
+    <h3 style="margin:10px 0 4px;font-size:14px;">あなたがよく引っかかる型</h3>
+    <div class="weak-pat">${pats.map(t=>`<span>${TRICKS[t].name} <b>${pc[t]}問</b></span>`).join('')}</div>
+    <div class="trick">🎯 いちばん多いのは<b>${top.name}</b>。${top.tip}</div>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0;">分野では ${catTop.map(c=>`${c}(${cc[c]}問)`).join('・')} が多め。分野別練習で★★★だけにして、ここを先に回すのが近道です。</p>
+    ${STEPS_HTML}
     <div class="btn-row"><button class="btn" id="startWeak">復習を始める</button></div>
   </div>`;
   document.getElementById('startWeak').onclick = () => startSession(shuffle(wrong.slice()), 'weak');
@@ -1944,7 +2018,7 @@ function answer(sel){
   });
   document.getElementById('feedback').innerHTML =
     `<div class="verdict ${ok?'ok':'ng'}">${ok?'○ 正解':'× 不正解'}　<span style="font-weight:400;font-size:13px;color:var(--muted)">正答:${KEYS[perm.indexOf(q.ans)]}</span></div>
-     <div class="explain">${q.ex}${krefHtml(q)}</div>`;
+     ${ok?'':trickHtml(q)}<div class="explain">${q.ex}${krefHtml(q)}</div>`;
   const act = document.getElementById('qActions');
   const nb = document.createElement('button');
   nb.className='btn'; nb.textContent = ss.idx+1 >= ss.qids.length ? '結果を見る' : '次の問題へ';
@@ -1982,7 +2056,7 @@ function renderResult(){
       <div class="rq-head"><span class="mark ${ok?'ok':'ng'}">${ok?'○':'×'}</span><span style="color:var(--muted)">問${i+1}・${q.c}</span>${rankBadge(rankOf(state.exam,q))}</div>
       <div class="rq-text">${esc(q.q)}</div>
       <div class="rq-detail">あなたの解答:${sel==null?'—':KEYS[perm.indexOf(sel)]+'. '+esc(q.a[sel])}<br>正答:<b style="color:var(--ok)">${KEYS[perm.indexOf(q.ans)]}. ${esc(q.a[q.ans])}</b></div>
-      ${ok?`<details class="ex-toggle"><summary>▼ 解説を見る</summary><div class="explain">${q.ex}${krefHtml(q)}</div></details>`:`<div class="explain" style="margin-top:6px">${q.ex}${krefHtml(q)}</div>`}
+      ${ok?`<details class="ex-toggle"><summary>▼ 解説を見る</summary><div class="explain">${q.ex}${krefHtml(q)}</div></details>`:`${trickHtml(q)}<div class="explain">${q.ex}${krefHtml(q)}</div>`}
     </div>`;
   }).join('');
 
