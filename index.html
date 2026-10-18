@@ -120,6 +120,7 @@ table.spec th{background:var(--surface2); white-space:nowrap; font-weight:600; w
 .verdict{font-weight:800; font-size:15px; margin:14px 0 6px;}
 .verdict.ok{color:var(--ok);} .verdict.ng{color:var(--ng);}
 .explain{background:var(--surface2); border-radius:10px; padding:12px 14px; font-size:13.5px;}
+.ex-toggle{margin-top:6px;} .ex-toggle>summary{cursor:pointer; font-size:13px; color:var(--accent); list-style:none; padding:4px 0;} .ex-toggle>summary::-webkit-details-marker{display:none;} .ex-toggle[open]>summary{margin-bottom:6px;}
 .explain b{color:var(--accent);}
 .kref{margin-top:8px; font-size:12.5px; border-top:1px dashed var(--line); padding-top:8px;}
 .kref a{color:var(--accent); font-weight:700; text-decoration:none;}
@@ -438,6 +439,32 @@ const KAN1_GUIDE = `
 <li>午前は原論(湿り空気・流体・熱・音)、電気(受変電・電動機・接地)、建築(RC・コンクリート)、空調(方式・熱負荷・空気線図・自動制御・換気・排煙)、衛生(上下水道・給水・給湯・排水通気・消火・ガス・浄化槽)、機器材料・設計図書。<b>計算問題(換気量・熱量・圧力損失・ポンプ揚程)</b>が2級より多い。</li>
 <li>法規は建設業法・労働安全衛生法・労働基準法・建築基準法・消防法・騒音規制法・廃棄物処理法・建設リサイクル法・浄化槽法・下水道法など2級と同じ法令群で、問い方がやや深い。</li>
 <li>2級合格者は<b>2級タブの402問を一通り回してから1級に入る</b>のが近道(基礎論点は共通)。</li>
+</ul>
+</div>
+<div class="card">
+<h2>出題形式の傾向と「間違い探し」の攻略</h2>
+<p style="color:var(--muted);font-size:13.5px;">平成29年〜令和8年の10回分(730問)を分類した結果です。</p>
+<table class="spec">
+<tr><th>設問の型</th><td><b>「適当でないものはどれか」= 間違い探しが全73問中およそ60問(8割超)</b>。午前Aは44問中36〜37問、午後Bは「適当でない」14問+法規「誤っているもの」7〜9問。「適当なもの/正しいもの」は年2〜4問、組合せ問題1〜3問、計算2〜4問、図読取(ネットワーク・QC図・空気線図)2〜3問。</td></tr>
+<tr><th>選択問題の構造</th><td>午前 No.15〜37の23問(空調9問+給排水衛生14問)から<b>12問選択</b>、午後 No.10〜21の法規12問から<b>10問選択</b>。それ以外(原論・電気・建築、機器材料・設計図書、施工管理、応用能力)は全問必須。</td></tr>
+<tr><th>応用能力(No.22〜29)</th><td>8問とも必須、<b>「適当でないものを2つ」</b>選ぶ形式で、正答率50%未満は総得点に関係なく不合格。出題は施工計画・工程(ネットワーク)・品質・安全・機器据付・配管・ダクト・保温防食の8領域に固定。</td></tr>
+</table>
+<h3>誤り選択肢の作られ方(多い順)</h3>
+<ul>
+<li><b>①数値を1段ずらす</b>(最多・法規と消防・安衛で特に):開閉弁1.5m→1.8m、開口部1/20→1/30、作業床幅40cm→30cm、休業手当60%→80%、有給の勤続6か月→4か月、排煙口30m→50m。<b>対策:</b>選択肢の数字に全部丸を付け、数値のある選択肢から疑う。</li>
+<li><b>②大小・増減を反転</b>(原論・空調):「外気温が下がると蒸発圧力は高く」「断熱すると表面温度が下がる」「並列運転で吐出量は2倍」。<b>対策:</b>「〜ほど」「〜すると」の後の方向を本文と逆にしていないか確認。</li>
+<li><b>③似た用語の入替え</b>:フリーフロート⇔インターフェアリングフロート、レンジ⇔アプローチ、直達⇔天空日射、道路占用(道路管理者)⇔道路使用(警察署長)、統括安全衛生責任者⇔総括安全衛生管理者、パレート図⇔特性要因図、湿式⇔予作動式、複層⇔合わせガラス。<b>対策:</b>ペアで覚える。本アプリの解説の太字がそのペアの正解側。</li>
+<li><b>④条件・対象のすり替え</b>:「〜であれば不要」「〜に限り」「〜のみ」「〜を問わず」が付いた文は要注意(共同住宅の一括下請、自ら施工なら主任技術者不要、船舶二重底なら電撃防止装置不要、など)。<b>対策:</b>例外を断定する文ほど疑う。</li>
+<li><b>⑤組合せ問題</b>:届出先(占用/使用/ばい煙/高圧ガス/特定建設作業)、JIS記号(SGP/STPG/SGPW/VP/HIVP)、VAV制御の検出要素、配管材と継手。4組のうち1組だけ崩してある。</li>
+<li><b>⑥計算問題の落とし穴</b>:単位換算(m³/s→m³/h)、外気CO₂濃度の引き忘れ、絶対温度(K)にしない、径が1/2→面積は1/4、動圧=全圧−静圧、浄化槽BODは流量で重み付け。</li>
+</ul>
+<h3>解き方の手順(間違い探し)</h3>
+<ul>
+<li>4つの選択肢の「数値」「方向(大きい/小さい・上がる/下がる)」「主語(誰が・どこに)」に印を付けてから読む。</li>
+<li>3つは正しい文なので、確実に正しいと分かる文から消す(消去法)。残った2つで迷ったら<b>数値が具体的な方・例外を断定している方</b>を選ぶ。</li>
+<li>応用能力は「誤りを2つ」。1つ見つけても止まらない。2つ目が決められないときは、残り3つのうち「正しい」と確信できる2つを消して残りをマーク(両方当てないと得点なし)。</li>
+<li>選択問題は、空調(No.15〜23)と衛生(No.24〜37)のどちらを軸にするか先に決め、軸側は全問・反対側は自信のある問題だけ。法規は建設業法・安衛法・労基法・建基法・消防法を必ず取り、廃掃法/リサイクル法/フロン法/騒音規制法/浄化槽法/建築物衛生法のうち弱い2問を捨てる。</li>
+<li>10年分で見ると論点の約6割が繰り返し(本アプリの★★★)。★★★だけで模試60%を超えるまで回してから★★に広げる。</li>
 </ul>
 </div>
 <div class="card">
@@ -1963,7 +1990,7 @@ function renderResult(){
       <div class="rq-head"><span class="mark ${ok?'ok':'ng'}">${ok?'○':'×'}</span><span style="color:var(--muted)">問${i+1}・${q.c}</span>${rankBadge(rankOf(state.exam,q))}</div>
       <div class="rq-text">${esc(q.q)}</div>
       <div class="rq-detail">あなたの解答:${sel==null?'—':KEYS[perm.indexOf(sel)]+'. '+esc(q.a[sel])}<br>正答:<b style="color:var(--ok)">${KEYS[perm.indexOf(q.ans)]}. ${esc(q.a[q.ans])}</b></div>
-      ${ok?'':`<div class="explain" style="margin-top:6px">${q.ex}${krefHtml(q)}</div>`}
+      ${ok?`<details class="ex-toggle"><summary>▼ 解説を見る</summary><div class="explain">${q.ex}${krefHtml(q)}</div></details>`:`<div class="explain" style="margin-top:6px">${q.ex}${krefHtml(q)}</div>`}
     </div>`;
   }).join('');
 
